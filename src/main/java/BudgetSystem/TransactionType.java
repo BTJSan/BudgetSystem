@@ -1,4 +1,8 @@
 package BudgetSystem;
 
-public class TransactionType {
+public enum TransactionType {
+
+    INCOME,
+    EXPENSE,
+
 }
