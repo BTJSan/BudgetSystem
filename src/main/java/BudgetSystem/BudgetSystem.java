@@ -39,6 +39,8 @@ public class BudgetSystem {
 
                 }
                 case "4" -> {
+                    //Kontrollera om resultatet blir 0 och skriv ut meddelande
+                    //Annars ska resultatet skrivas ut
 
                 }
                 case "5" -> {

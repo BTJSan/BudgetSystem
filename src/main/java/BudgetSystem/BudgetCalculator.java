@@ -1,8 +1,11 @@
 package BudgetSystem;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BudgetCalculator {
+
     public double totalBalance(List<Transaction> list) {
         double result = 0.0;
 
@@ -17,11 +20,18 @@ public class BudgetCalculator {
         return result;
     }
 
+    public List<Transaction> filterByDate(List<Transaction> list, LocalDateTime filterDate) {
+        List<Transaction> result = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Transaction t = list.get(i);
+            if (t.date().equals(filterDate))
+                result.add(t);
+        }
+        return result;
+    }
+
     //Todo: skapa metoder
 
-    //totalBalance
-
-    //filterByDate
     //filterByType
     //sortIncomeByDate
     //sortExpenseByDate
