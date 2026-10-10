@@ -7,17 +7,21 @@ import java.util.List;
 public class BudgetCalculator {
 
     public double totalBalance(List<Transaction> list) {
-        double result = 0.0;
 
-        for (int i = 0; i < list.size(); i++) {
-            Transaction t = list.get(i);
+        return list.stream().mapToDouble(t -> t.type() == TransactionType.INCOME
+                ? t.amount() : -t.amount()).sum();
 
-            if (t.type() == TransactionType.INCOME)
-                result += t.amount();
-            if (t.type() == TransactionType.EXPENSE)
-                result -= t.amount();
-        }
-        return result;
+//        double result = 0.0;
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            Transaction t = list.get(i);
+//
+//            if (t.type() == TransactionType.INCOME)
+//                result += t.amount();
+//            if (t.type() == TransactionType.EXPENSE)
+//                result -= t.amount();
+//        }
+//        return result;
     }
 
     public List<Transaction> filterByDate(List<Transaction> list, LocalDateTime filterDate) {
@@ -42,7 +46,7 @@ public class BudgetCalculator {
 
     //Todo: skapa metoder
 
-    //filterByType
+    //sumPerCategory
     //sortIncomeByDate
     //sortExpenseByDate
 
