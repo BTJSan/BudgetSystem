@@ -30,6 +30,16 @@ public class BudgetCalculator {
         return result;
     }
 
+    public List<Transaction> filterByType(List<Transaction> list, TransactionType filterType) {
+        List<Transaction> result = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Transaction t = list.get(i);
+            if (t.type() == filterType)
+                result.add(t);
+        }
+        return result;
+    }
+
     //Todo: skapa metoder
 
     //filterByType
