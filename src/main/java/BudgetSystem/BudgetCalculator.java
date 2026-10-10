@@ -3,6 +3,7 @@ package BudgetSystem;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BudgetCalculator {
 
@@ -42,6 +43,10 @@ public class BudgetCalculator {
                 result.add(t);
         }
         return result;
+    }
+
+    public Map<TransactionType, Double> sumPerCategory(List<Transaction> list) {
+        return null;
     }
 
     //Todo: skapa metoder

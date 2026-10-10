@@ -36,7 +36,7 @@ public class BudgetSystem {
                     showTransactions();
                 }
                 case "3" -> {
-
+                    showSummary();
                 }
                 case "4" -> {
                     //Kontrollera om resultatet blir 0 och skriv ut meddelande
@@ -65,6 +65,10 @@ public class BudgetSystem {
     }
 
     private static void showTransactions() {
+
+    }
+
+    private static void showSummary() {
 
     }
 
