@@ -2,8 +2,10 @@ package BudgetSystem;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BudgetCalculator {
 
@@ -23,6 +25,11 @@ public class BudgetCalculator {
 //                result -= t.amount();
 //        }
 //        return result;
+    }
+
+    public Map<TransactionType, Double> sumPerCategory(List<Transaction> list) {
+        return list.stream().collect(Collectors.groupingBy(t -> t.type(),
+                Collectors.summingDouble(t -> t.amount())));
     }
 
     public List<Transaction> filterByDate(List<Transaction> list, LocalDateTime filterDate) {
@@ -45,9 +52,7 @@ public class BudgetCalculator {
         return result;
     }
 
-    public Map<TransactionType, Double> sumPerCategory(List<Transaction> list) {
-        return null;
-    }
+
 
     //Todo: skapa metoder
 
