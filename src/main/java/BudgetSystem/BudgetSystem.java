@@ -1,11 +1,20 @@
 package BudgetSystem;
 
+import java.time.LocalDateTime;
+
+
+
 public class BudgetSystem {
+
+    Repository<Transaction> transactions = new Repository<Transaction>();
+
     //Todo: lägg till metoder och menyn
     //addTransaction
     //showTransactions
 
     static void main() {
+
+        BudgetSystem budgetSystem = new BudgetSystem();
 
         boolean closeApplication = false;
         String inputChoice;
@@ -30,13 +39,13 @@ public class BudgetSystem {
 
             switch (inputChoice) {
                 case "1" -> {
-                    addTransaction();
+                    budgetSystem.addTransaction();
                 }
                 case "2" -> {
-                    showTransactions();
+                    budgetSystem.showTransactions();
                 }
                 case "3" -> {
-                    showSummary();
+                    budgetSystem.showSummary();
                 }
                 case "4" -> {
                     //Kontrollera om resultatet blir 0 och skriv ut meddelande
@@ -44,9 +53,9 @@ public class BudgetSystem {
 
                 }
                 case "5" -> {
-                    saveToFile();
+                    budgetSystem.saveToFile();
                 }
-                case "e"  -> {
+                case "e" -> {
                     closeApplication = true;
                 }
                 default -> {
@@ -58,21 +67,66 @@ public class BudgetSystem {
     }
 
 
+    private void addTransaction() {
+        int newType = 0;
+        String newCategory;
+        double newAmount = 0.0;
 
+        boolean running1 = true;
+        while (running1) {
+            try {
+                newType = Integer.parseInt(IO.readln("""
+                Ange typ av transaktion: 
+                1. Inkomst
+                2. Utgift"""));
 
-    private static void addTransaction() {
+                if (newType == 1 || newType == 2)
+                running1 = false;
+                else {
+                    IO.println("Felaktig inmatning, försök igen");
+                    continue;
+                }
+            }
+            catch (Exception e) {
+                IO.println("Felaktig inmatning, försök igen.");
+                continue;
+            }
+        }
+
+        newCategory = IO.readln("Ange kategori (exempel lön, mat etc.): ");
+
+        boolean running2 = true;
+        while (running2) {
+            try {
+                newAmount = Double.parseDouble(IO.readln("Ange summan: "));
+                running2 = false;
+            }
+            catch (NumberFormatException e) {
+                IO.println("Felaktigt värde, försök igen.");
+                continue;
+            }
+        }
+
+        TransactionType typeEnum;
+        if (newType == 1)
+            typeEnum = TransactionType.INCOME;
+        else
+            typeEnum = TransactionType.EXPENSE;
+
+        Transaction transaction = new Transaction(LocalDateTime.now(), newCategory, newAmount, typeEnum);
+        transactions.add(transaction);
 
     }
 
-    private static void showTransactions() {
+    private void showTransactions() {
 
     }
 
-    private static void showSummary() {
+    private void showSummary() {
 
     }
 
-    private static void saveToFile() {
+    private void saveToFile() {
 
     }
 
