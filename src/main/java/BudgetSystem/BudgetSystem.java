@@ -69,7 +69,7 @@ public class BudgetSystem {
 
     private void addTransaction() {
         int newType = 0;
-        String newCategory;
+        String newCategory = "";
         double newAmount = 0.0;
 
         boolean running1 = true;
@@ -84,26 +84,30 @@ public class BudgetSystem {
                 running1 = false;
                 else {
                     IO.println("Felaktig inmatning, försök igen");
-                    continue;
                 }
             }
             catch (Exception e) {
                 IO.println("Felaktig inmatning, försök igen.");
-                continue;
             }
         }
 
-        newCategory = IO.readln("Ange kategori (exempel lön, mat etc.): ");
-
         boolean running2 = true;
         while (running2) {
+        newCategory = IO.readln("Ange kategori (exempel lön, mat etc.): ");
+        if (newCategory.trim().isEmpty())
+            IO.println("Du måste ange en kategori, försök igen.");
+        else
+            running2 = false;
+        }
+
+        boolean running3 = true;
+        while (running3) {
             try {
                 newAmount = Double.parseDouble(IO.readln("Ange summan: "));
-                running2 = false;
+                running3 = false;
             }
             catch (NumberFormatException e) {
                 IO.println("Felaktigt värde, försök igen.");
-                continue;
             }
         }
 
