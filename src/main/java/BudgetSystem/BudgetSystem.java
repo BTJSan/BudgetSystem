@@ -1,8 +1,7 @@
 package BudgetSystem;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 
 public class BudgetSystem {
@@ -78,28 +77,27 @@ public class BudgetSystem {
         while (running1) {
             try {
                 newType = Integer.parseInt(IO.readln("""
-                Ange typ av transaktion: 
-                1. Inkomst
-                2. Utgift"""));
+                        Ange typ av transaktion: 
+                        1. Inkomst
+                        2. Utgift"""));
 
                 if (newType == 1 || newType == 2)
-                running1 = false;
+                    running1 = false;
                 else {
                     IO.println("Felaktig inmatning, försök igen");
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 IO.println("Felaktig inmatning, försök igen.");
             }
         }
 
         boolean running2 = true;
         while (running2) {
-        newCategory = IO.readln("Ange kategori (exempel lön, mat etc.): ");
-        if (newCategory.trim().isEmpty())
-            IO.println("Du måste ange en kategori, försök igen.");
-        else
-            running2 = false;
+            newCategory = IO.readln("Ange kategori (exempel lön, mat etc.): ");
+            if (newCategory.trim().isEmpty())
+                IO.println("Du måste ange en kategori, försök igen.");
+            else
+                running2 = false;
         }
 
         boolean running3 = true;
@@ -110,11 +108,9 @@ public class BudgetSystem {
                     throw new InvalidTransactionException("Beloppet måste vara större än 0.");
 
                 running3 = false;
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 IO.println("Felaktigt värde, försök igen.");
-            }
-            catch (InvalidTransactionException e) {
+            } catch (InvalidTransactionException e) {
                 IO.println(e.getMessage());
             }
         }
