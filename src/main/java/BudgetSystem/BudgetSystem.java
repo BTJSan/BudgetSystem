@@ -1,6 +1,7 @@
 package BudgetSystem;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Map;
 
 
@@ -130,7 +131,18 @@ public class BudgetSystem {
     }
 
     private void showTransactions() {
+        Collection<Transaction> list = transactions.findAll();
+        if (list.isEmpty()) {
+            IO.println("Det finns inga transaktioner registrerade.");
+            return;
+        }
 
+        for (Transaction transaction : list) {
+            IO.println(transaction.date() + "\t|\t" + transaction.category()
+                    + "\t|\t"
+                    + transaction.amount() + "\t|\t"
+                    + transaction.type().displayName());
+        }
     }
 
     private void showSummary() {
