@@ -138,8 +138,8 @@ public class BudgetSystem {
         }
 
         for (Transaction transaction : list) {
-            IO.println(transaction.date() + "\t|\t" + transaction.category()
-                    + "\t|\t"
+            IO.println(transaction.date() + "\t|\t"
+                    + transaction.category() + "\t|\t"
                     + transaction.amount() + "\t|\t"
                     + transaction.type().displayName());
         }
