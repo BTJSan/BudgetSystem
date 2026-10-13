@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +62,7 @@ class BudgetCalculatorTest {
                 TransactionType.EXPENSE);
 
         List<Transaction> list = List.of(t1, t2, t3, t4);
-        Map<TransactionType, Double> summary = calculator.sumPerCategory(list);
+        Map<TransactionType, Double> summary = calculator.sumPerType(list);
 
         assertEquals(20500, summary.get(TransactionType.INCOME));
         assertEquals(1000, summary.get(TransactionType.EXPENSE));
@@ -74,7 +72,7 @@ class BudgetCalculatorTest {
     @Test
     @DisplayName("If there are no transactions, sumPerCategory returns zero")
     void sumPerCategoryWillReturnZeroIfNoTransactions() {
-        Map<TransactionType, Double> summary = calculator.sumPerCategory(List.of());
+        Map<TransactionType, Double> summary = calculator.sumPerType(List.of());
         assertEquals(summary.isEmpty(), true);
     }
 

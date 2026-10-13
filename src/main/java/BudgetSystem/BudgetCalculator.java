@@ -2,15 +2,17 @@ package BudgetSystem;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BudgetCalculator {
 
-    public double totalBalance(List<Transaction> list) {
+    public double totalBalance(Collection<Transaction> list) {
 
-        return list.stream().mapToDouble(t -> t.type() == TransactionType.INCOME
+        return list.stream()
+                .mapToDouble(t -> t.type() == TransactionType.INCOME
                 ? t.amount() : -t.amount()).sum();
 
 //        double result = 0.0;
@@ -26,28 +28,23 @@ public class BudgetCalculator {
 //        return result;
     }
 
-    public Map<TransactionType, Double> sumPerCategory(List<Transaction> list) {
-        return list.stream().collect(Collectors.groupingBy(t -> t.type(),
+    public Map<TransactionType, Double> sumPerType(Collection<Transaction> list) {
+        return list.stream()
+                .collect(Collectors.groupingBy(t -> t.type(),
                 Collectors.summingDouble(t -> t.amount())));
     }
 
     public List<Transaction> filterByDate(List<Transaction> list, LocalDateTime filterDate) {
-        List<Transaction> result = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            Transaction t = list.get(i);
-            if (t.date().equals(filterDate))
-                result.add(t);
-        }
+        List<Transaction> result = list.stream()
+                .filter(t -> t.date().equals(filterDate))
+                .collect(Collectors.toList());
         return result;
     }
 
     public List<Transaction> filterByType(List<Transaction> list, TransactionType filterType) {
-        List<Transaction> result = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            Transaction t = list.get(i);
-            if (t.type() == filterType)
-                result.add(t);
-        }
+        List<Transaction> result = list.stream()
+                .filter(t -> t.type() == filterType)
+                .collect(Collectors.toList());
         return result;
     }
 

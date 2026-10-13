@@ -1,12 +1,13 @@
 package BudgetSystem;
 
 import java.time.LocalDateTime;
-
+import java.util.Map;
 
 
 public class BudgetSystem {
 
     Repository<Transaction> transactions = new Repository<Transaction>();
+    private BudgetCalculator calculator = new BudgetCalculator();
 
     //Todo: lägg till metoder och menyn
     //addTransaction
@@ -50,6 +51,7 @@ public class BudgetSystem {
                 case "4" -> {
                     //Kontrollera om resultatet blir 0 och skriv ut meddelande
                     //Annars ska resultatet skrivas ut
+                    budgetSystem.filterOptions();
 
                 }
                 case "5" -> {
@@ -65,7 +67,6 @@ public class BudgetSystem {
         }
 
     }
-
 
     private void addTransaction() {
         int newType = 0;
@@ -133,6 +134,16 @@ public class BudgetSystem {
     }
 
     private void showSummary() {
+        double balance = calculator.totalBalance(transactions.findAll());
+        IO.println("Saldo: " + balance);
+
+        Map<TransactionType, Double> map = calculator.sumPerType(transactions.findAll());
+        for (Map.Entry<TransactionType, Double> entry : map.entrySet()) {
+            IO.println(entry.getKey().displayName() + ": " + entry.getValue());
+        }
+    }
+
+    private void filterOptions() {
 
     }
 
