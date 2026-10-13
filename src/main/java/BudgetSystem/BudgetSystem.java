@@ -104,10 +104,16 @@ public class BudgetSystem {
         while (running3) {
             try {
                 newAmount = Double.parseDouble(IO.readln("Ange summan: "));
+                if (newAmount <= 0)
+                    throw new InvalidTransactionException("Beloppet måste vara större än 0.");
+
                 running3 = false;
             }
             catch (NumberFormatException e) {
                 IO.println("Felaktigt värde, försök igen.");
+            }
+            catch (InvalidTransactionException e) {
+                IO.println(e.getMessage());
             }
         }
 
