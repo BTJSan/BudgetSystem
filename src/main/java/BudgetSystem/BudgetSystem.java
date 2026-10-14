@@ -149,6 +149,66 @@ public class BudgetSystem {
 
     private void filterOptions() {
 
+        //1: Visar transaktioner av ena eller andra typen
+        //Kräver två val (if-sats)
+        //Todo: Skriv färdigt utskriften för 1, utgifter
+        //2. Visar transaktioner för ett datum (Y, M, D)
+        //Inmatning med siffror med kontroller
+
+        Collection<Transaction> list = transactions.findAll();
+        List<Transaction> filteredList = null;
+        int sortChoice = 0;
+        int typeChoice = 0;
+        int dateChoice = 0;
+        int monthChoice = 0;
+        int yearChoice = 0;
+
+        if (list.isEmpty()) {
+            IO.println("Det finns inga transaktioner registrerade.");
+            return;
+        }
+
+        boolean running1 = true;
+        while (running1) {
+            try {
+                sortChoice = Integer.parseInt(IO.readln("""
+                        Välj sortering:
+                        1. Sortera på inkomster / utgifter
+                        2. Sortera på datum"""));
+
+                if (sortChoice == 1 || sortChoice == 2)
+                    running1 = false;
+                else {
+                    IO.println("Felaktig inmatning, försök igen");
+                }
+            } catch (Exception e) {
+                IO.println("Felaktig inmatning, försök igen");
+            }
+        }
+
+        boolean running2 = true;
+        while (running2) {
+            try {
+                typeChoice = Integer.parseInt(IO.readln("""
+                        Vilken typ vill du sortera på?
+                        1. Inkomster
+                        2. Utgifter"""));
+
+                if (typeChoice == 1) {
+                    filteredList = calculator.filterByType(list, TransactionType.INCOME);
+
+                    for (Transaction transaction : filteredList) {
+                        IO.println(transaction.date() + "\t|\t"
+                                + transaction.category() + "\t|\t"
+                                + transaction.amount());
+                    }
+                    running2 = false;
+                }
+            } catch (Exception e) {
+                IO.println("Felaktig inmatning, försök igen");
+            }
+        }
+
     }
 
     private void saveToFile() {

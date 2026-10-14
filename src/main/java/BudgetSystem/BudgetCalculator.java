@@ -42,7 +42,7 @@ public class BudgetCalculator {
         return result;
     }
 
-    public List<Transaction> filterByType(List<Transaction> list, TransactionType filterType) {
+    public List<Transaction> filterByType(Collection<Transaction> list, TransactionType filterType) {
         List<Transaction> result = list.stream()
                 .filter(t -> t.type() == filterType)
                 .collect(Collectors.toList());
