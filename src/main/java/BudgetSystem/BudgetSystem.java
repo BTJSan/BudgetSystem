@@ -1,6 +1,8 @@
 package BudgetSystem;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.*;
 
 
@@ -20,7 +22,7 @@ public class BudgetSystem {
                 Budgethanteraren
                 ---------------------
                 Alternativ:
-                1. Lagg till transaktion
+                1. Lägg till transaktion
                 2. Visa alla transaktioner
                 3. Visa saldo och sammanställning per kategori
                 4. Filtrera transaktioner
@@ -149,12 +151,6 @@ public class BudgetSystem {
 
     private void filterOptions() {
 
-        //1: Visar transaktioner av ena eller andra typen
-        //Kräver två val (if-sats)
-        //Todo: Skriv färdigt utskriften för 1, utgifter
-        //2. Visar transaktioner för ett datum (Y, M, D)
-        //Inmatning med siffror med kontroller
-
         Collection<Transaction> list = transactions.findAll();
         List<Transaction> filteredList = null;
         int sortChoice = 0;
@@ -186,30 +182,130 @@ public class BudgetSystem {
             }
         }
 
-        boolean running2 = true;
-        while (running2) {
-            try {
-                typeChoice = Integer.parseInt(IO.readln("""
-                        Vilken typ vill du sortera på?
-                        1. Inkomster
-                        2. Utgifter"""));
+        if (sortChoice == 1) {
+            boolean running2 = true;
+            while (running2) {
+                try {
+                    typeChoice = Integer.parseInt(IO.readln("""
+                            Vilken typ vill du sortera på?
+                            1. Inkomster
+                            2. Utgifter"""));
 
-                if (typeChoice == 1) {
-                    filteredList = calculator.filterByType(list, TransactionType.INCOME);
+                    if (typeChoice == 1) {
+                        filteredList = calculator.filterByType(list, TransactionType.INCOME);
 
-                    for (Transaction transaction : filteredList) {
-                        IO.println(transaction.date() + "\t|\t"
-                                + transaction.category() + "\t|\t"
-                                + transaction.amount());
+                        for (Transaction transaction : filteredList) {
+                            IO.println(transaction.date() + "\t|\t"
+                                    + transaction.category() + "\t|\t"
+                                    + transaction.amount());
+                        }
+                        running2 = false;
                     }
-                    running2 = false;
+                } catch (Exception e) {
+                    IO.println("Felaktig inmatning, försök igen");
                 }
-            } catch (Exception e) {
-                IO.println("Felaktig inmatning, försök igen");
+
+                try {
+                    if (typeChoice == 2) {
+                        filteredList = calculator.filterByType(list, TransactionType.EXPENSE);
+
+                        for (Transaction transaction : filteredList) {
+                            IO.println(transaction.date() + "\t|\t"
+                                    + transaction.category() + "\t|\t"
+                                    + transaction.amount());
+                        }
+                        running2 = false;
+                    }
+                } catch (Exception e) {
+                    IO.println("Felaktig inmatning, försök igen");
+                }
             }
         }
+        if (sortChoice == 2) {
+            boolean runningYear = true;
+            while (runningYear) {
+                IO.println("Ange datumet du vill filtrera på:");
 
-    }
+                try {
+                    yearChoice = Integer.parseInt(IO.readln("Ange år med fyra siffror: "));
+                    if (yearChoice >= 1900 &&  yearChoice <= LocalDate.now().getYear())
+                        runningYear = false;
+                    else if (yearChoice < 1900)
+                        IO.println("Året får inte ligga före 1900.");
+                    else
+                        IO.println("Du kan inte söka på år efter nuvarande år.");
+
+                }
+                catch (Exception e) {
+                    IO.println("Felaktig inmatning, försök igen.");
+                }
+            }
+
+            boolean runningMonth = true;
+            while (runningMonth) {
+                try {
+                    monthChoice = Integer.parseInt(IO.readln("""
+                        Ange månad: 
+                        1. Januari
+                        2. Februari
+                        3. Mars
+                        4. April
+                        5. Maj
+                        6. Juni
+                        7. Juli
+                        8. Augusti
+                        9. September
+                        10. Oktober
+                        11. November
+                        12. December"""));
+
+                    if (monthChoice >= 1 || monthChoice <= 12)
+                        runningMonth = false;
+                    else
+                        IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
+                }
+                catch (Exception e) {
+                    IO.println("Felaktig inmatning, försök igen.");
+                }
+            }
+
+            YearMonth ym = YearMonth.of(yearChoice, monthChoice);
+            int maxDay = ym.lengthOfMonth();
+            boolean runningDate = true;
+            while (runningDate) {
+                try {
+                    dateChoice = Integer.parseInt(IO.readln("Ange datum: "));
+                    if (dateChoice >= 1 && dateChoice <= maxDay)
+                        runningDate = false;
+                    else
+                        IO.println("Den här månaden har " + maxDay + " dagar, försök igen.");
+                }
+                catch (Exception e) {
+                    IO.println("Felaktig inmatning, försök igen.");
+                }
+            }
+
+            LocalDate filterDate = LocalDate.of(yearChoice, monthChoice, dateChoice);
+            filteredList = calculator.filterByDate(list, filterDate);
+
+            if (filteredList.isEmpty())
+                IO.println("Det finns inga transaktioner för det angivna datumet.");
+            else {
+                IO.println("Transaktioner för " + filterDate + ":");
+                for (Transaction transaction : filteredList) {
+                    IO.println(transaction.date() + "\t|\t");
+                    IO.println(transaction.category() + "\t|\t");
+                    IO.println(transaction.amount());
+                }
+            }
+
+        }
+
+
+        }
+
+
+
 
     private void saveToFile() {
 

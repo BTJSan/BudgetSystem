@@ -35,7 +35,7 @@ public class BudgetCalculator {
                 Collectors.summingDouble(t -> t.amount())));
     }
 
-    public List<Transaction> filterByDate(List<Transaction> list, LocalDate filterDate) {
+    public List<Transaction> filterByDate(Collection<Transaction> list, LocalDate filterDate) {
         List<Transaction> result = list.stream()
                 .filter(t -> t.date().toLocalDate().equals(filterDate))
                 .collect(Collectors.toList());
