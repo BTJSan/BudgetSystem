@@ -9,10 +9,6 @@ public class BudgetSystem {
     Repository<Transaction> transactions = new Repository<Transaction>();
     private BudgetCalculator calculator = new BudgetCalculator();
 
-    //Todo: lägg till metoder och menyn
-    //addTransaction
-    //showTransactions
-
     static void main() {
 
         BudgetSystem budgetSystem = new BudgetSystem();

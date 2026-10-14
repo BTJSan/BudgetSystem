@@ -1,5 +1,6 @@
 package BudgetSystem;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,9 +35,9 @@ public class BudgetCalculator {
                 Collectors.summingDouble(t -> t.amount())));
     }
 
-    public List<Transaction> filterByDate(List<Transaction> list, LocalDateTime filterDate) {
+    public List<Transaction> filterByDate(List<Transaction> list, LocalDate filterDate) {
         List<Transaction> result = list.stream()
-                .filter(t -> t.date().equals(filterDate))
+                .filter(t -> t.date().toLocalDate().equals(filterDate))
                 .collect(Collectors.toList());
         return result;
     }

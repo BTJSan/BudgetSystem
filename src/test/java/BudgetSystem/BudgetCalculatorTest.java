@@ -3,6 +3,7 @@ package BudgetSystem;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
@@ -89,7 +90,7 @@ class BudgetCalculatorTest {
                 TransactionType.INCOME);
 
         List<Transaction> list = List.of(t1, t2);
-        LocalDateTime filterDate = t1.date();
+        LocalDate filterDate = LocalDate.of(2025, Month.MARCH, 25);
 
         List<Transaction> result = calculator.filterByDate(list, filterDate);
         assertEquals(1, result.size());
