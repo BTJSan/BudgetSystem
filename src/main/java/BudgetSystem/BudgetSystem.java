@@ -3,6 +3,7 @@ package BudgetSystem;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -29,7 +30,7 @@ public class BudgetSystem {
                 5. Spara till fil
                 e. Avsluta
                 ----------------------
-                """;
+                \n""";
 
         while (!closeApplication) {
 
@@ -77,7 +78,7 @@ public class BudgetSystem {
                 newType = Integer.parseInt(IO.readln("""
                         Ange typ av transaktion: 
                         1. Inkomst
-                        2. Utgift"""));
+                        2. Utgift\n"""));
 
                 if (newType == 1 || newType == 2)
                     running1 = false;
@@ -91,7 +92,7 @@ public class BudgetSystem {
 
         boolean running2 = true;
         while (running2) {
-            newCategory = IO.readln("Ange kategori (exempel lön, mat etc.): ");
+            newCategory = IO.readln("\nAnge kategori (exempel lön, mat etc.): ");
             if (newCategory.trim().isEmpty())
                 IO.println("Du måste ange en kategori, försök igen.");
             else
@@ -126,13 +127,14 @@ public class BudgetSystem {
 
     private void showTransactions() {
         Collection<Transaction> list = transactions.findAll();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (list.isEmpty()) {
             IO.println("Det finns inga transaktioner registrerade.");
             return;
         }
 
         for (Transaction transaction : list) {
-            IO.println(transaction.date() + "\t|\t"
+            IO.println(transaction.date().format(dtf) + "\t|\t"
                     + transaction.category() + "\t|\t"
                     + transaction.amount() + "\t|\t"
                     + transaction.type().displayName());
@@ -153,6 +155,7 @@ public class BudgetSystem {
 
         Collection<Transaction> list = transactions.findAll();
         List<Transaction> filteredList = null;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         int sortChoice = 0;
         int typeChoice = 0;
         int dateChoice = 0;
@@ -170,7 +173,7 @@ public class BudgetSystem {
                 sortChoice = Integer.parseInt(IO.readln("""
                         Välj sortering:
                         1. Sortera på inkomster / utgifter
-                        2. Sortera på datum"""));
+                        2. Sortera på datum\n"""));
 
                 if (sortChoice == 1 || sortChoice == 2)
                     running1 = false;
@@ -189,13 +192,13 @@ public class BudgetSystem {
                     typeChoice = Integer.parseInt(IO.readln("""
                             Vilken typ vill du sortera på?
                             1. Inkomster
-                            2. Utgifter"""));
+                            2. Utgifter\n"""));
 
                     if (typeChoice == 1) {
                         filteredList = calculator.filterByType(list, TransactionType.INCOME);
 
                         for (Transaction transaction : filteredList) {
-                            IO.println(transaction.date() + "\t|\t"
+                            IO.println(transaction.date().format(dtf) + "\t|\t"
                                     + transaction.category() + "\t|\t"
                                     + transaction.amount());
                         }
@@ -210,7 +213,7 @@ public class BudgetSystem {
                         filteredList = calculator.filterByType(list, TransactionType.EXPENSE);
 
                         for (Transaction transaction : filteredList) {
-                            IO.println(transaction.date() + "\t|\t"
+                            IO.println(transaction.date().format(dtf) + "\t|\t"
                                     + transaction.category() + "\t|\t"
                                     + transaction.amount());
                         }
@@ -257,7 +260,7 @@ public class BudgetSystem {
                         9. September
                         10. Oktober
                         11. November
-                        12. December"""));
+                        12. December\n"""));
 
                     if (monthChoice >= 1 || monthChoice <= 12)
                         runningMonth = false;
@@ -293,7 +296,7 @@ public class BudgetSystem {
             else {
                 IO.println("Transaktioner för " + filterDate + ":");
                 for (Transaction transaction : filteredList) {
-                    IO.println(transaction.date() + "\t|\t");
+                    IO.println(transaction.date().format(dtf) + "\t|\t");
                     IO.println(transaction.category() + "\t|\t");
                     IO.println(transaction.amount());
                 }
