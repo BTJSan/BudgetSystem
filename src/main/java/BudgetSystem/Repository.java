@@ -14,7 +14,7 @@ public class Repository<T> {
     }
 
     public Collection<T> findAll() {
-        return elements;
+        return new ArrayList<>(elements);
     }
 
     public Collection<T> findWhere(Predicate<T> predicate) {

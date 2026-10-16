@@ -1,8 +1,6 @@
 package BudgetSystem;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,17 +14,6 @@ public class BudgetCalculator {
                 .mapToDouble(t -> t.type() == TransactionType.INCOME
                 ? t.amount() : -t.amount()).sum();
 
-//        double result = 0.0;
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            Transaction t = list.get(i);
-//
-//            if (t.type() == TransactionType.INCOME)
-//                result += t.amount();
-//            if (t.type() == TransactionType.EXPENSE)
-//                result -= t.amount();
-//        }
-//        return result;
     }
 
     public Map<TransactionType, Double> sumPerType(Collection<Transaction> list) {

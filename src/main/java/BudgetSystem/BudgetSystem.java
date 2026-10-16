@@ -12,7 +12,7 @@ public class BudgetSystem {
     Repository<Transaction> transactions = new Repository<Transaction>();
     private BudgetCalculator calculator = new BudgetCalculator();
 
-    static void main() {
+    static void main(String[] args) {
 
         BudgetSystem budgetSystem = new BudgetSystem();
 
@@ -154,7 +154,7 @@ public class BudgetSystem {
     private void filterOptions() {
 
         Collection<Transaction> list = transactions.findAll();
-        List<Transaction> filteredList = null;
+        List<Transaction> filteredList;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         int sortChoice = 0;
         int typeChoice = 0;
@@ -196,32 +196,25 @@ public class BudgetSystem {
 
                     if (typeChoice == 1) {
                         filteredList = calculator.filterByType(list, TransactionType.INCOME);
-
-                        for (Transaction transaction : filteredList) {
-                            IO.println(transaction.date().format(dtf) + "\t|\t"
-                                    + transaction.category() + "\t|\t"
-                                    + transaction.amount());
-                        }
-                        running2 = false;
                     }
-                } catch (Exception e) {
-                    IO.println("Felaktig inmatning, försök igen");
-                }
-
-                try {
-                    if (typeChoice == 2) {
+                    else if (typeChoice == 2) {
                         filteredList = calculator.filterByType(list, TransactionType.EXPENSE);
-
+                    }
+                    else {
+                        IO.println("Felaktig inmatning, försök igen");
+                        continue;
+                    }
                         for (Transaction transaction : filteredList) {
                             IO.println(transaction.date().format(dtf) + "\t|\t"
                                     + transaction.category() + "\t|\t"
                                     + transaction.amount());
                         }
                         running2 = false;
-                    }
+
                 } catch (Exception e) {
                     IO.println("Felaktig inmatning, försök igen");
                 }
+
             }
         }
         if (sortChoice == 2) {
@@ -262,7 +255,7 @@ public class BudgetSystem {
                         11. November
                         12. December\n"""));
 
-                    if (monthChoice >= 1 || monthChoice <= 12)
+                    if (monthChoice >= 1 && monthChoice <= 12)
                         runningMonth = false;
                     else
                         IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
@@ -296,9 +289,9 @@ public class BudgetSystem {
             else {
                 IO.println("Transaktioner för " + filterDate + ":");
                 for (Transaction transaction : filteredList) {
-                    IO.println(transaction.date().format(dtf) + "\t|\t");
-                    IO.println(transaction.category() + "\t|\t");
-                    IO.println(transaction.amount());
+                    IO.println(transaction.date().format(dtf) + "\t|\t"
+                            + transaction.category()
+                            + "\t|\t" + transaction.amount());
                 }
             }
 
