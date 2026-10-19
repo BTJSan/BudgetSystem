@@ -1,5 +1,8 @@
 package BudgetSystem;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -14,6 +17,22 @@ public class BudgetSystem {
     private BudgetCalculator calculator = new BudgetCalculator();
 
     static void main(String[] args) {
+
+        String homeFolder = System.getProperty("user.home");
+        Path homePath = Path.of(homeFolder);
+        Path path = homePath.resolve("java26", "budget.csv");
+
+        try {
+            List<String> lines = Files.readAllLines(path);
+            lines.forEach(IO::println);
+        } catch (IOException e) {
+            IO.println("Error while reading file");
+        }
+
+
+        String homeFolder = System.getProperty("user.home");
+        Path homePath = Path.of(homeFolder);
+        Path savePath = homePath.resolve("budget");
 
         BudgetSystem budgetSystem = new BudgetSystem();
 
@@ -207,20 +226,18 @@ public class BudgetSystem {
 
                     if (typeChoice == 1) {
                         filteredList = calculator.filterByType(list, TransactionType.INCOME);
-                    }
-                    else if (typeChoice == 2) {
+                    } else if (typeChoice == 2) {
                         filteredList = calculator.filterByType(list, TransactionType.EXPENSE);
-                    }
-                    else {
+                    } else {
                         IO.println("Felaktig inmatning, försök igen");
                         continue;
                     }
-                        for (Transaction transaction : filteredList) {
-                            IO.println(transaction.date().format(dtf) + "\t|\t"
-                                    + transaction.category() + "\t|\t"
-                                    + transaction.amount());
-                        }
-                        running2 = false;
+                    for (Transaction transaction : filteredList) {
+                        IO.println(transaction.date().format(dtf) + "\t|\t"
+                                + transaction.category() + "\t|\t"
+                                + transaction.amount());
+                    }
+                    running2 = false;
 
                 } catch (Exception e) {
                     LOGGER.info("User tried invalid type choice.");
@@ -236,15 +253,14 @@ public class BudgetSystem {
 
                 try {
                     yearChoice = Integer.parseInt(IO.readln("Ange år med fyra siffror: "));
-                    if (yearChoice >= 1900 &&  yearChoice <= LocalDate.now().getYear())
+                    if (yearChoice >= 1900 && yearChoice <= LocalDate.now().getYear())
                         runningYear = false;
                     else if (yearChoice < 1900)
                         IO.println("Året får inte ligga före 1900.");
                     else
                         IO.println("Du kan inte söka på år efter nuvarande år.");
 
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     LOGGER.info("User tried invalid year.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
@@ -254,26 +270,25 @@ public class BudgetSystem {
             while (runningMonth) {
                 try {
                     monthChoice = Integer.parseInt(IO.readln("""
-                        Ange månad: 
-                        1. Januari
-                        2. Februari
-                        3. Mars
-                        4. April
-                        5. Maj
-                        6. Juni
-                        7. Juli
-                        8. Augusti
-                        9. September
-                        10. Oktober
-                        11. November
-                        12. December\n"""));
+                            Ange månad: 
+                            1. Januari
+                            2. Februari
+                            3. Mars
+                            4. April
+                            5. Maj
+                            6. Juni
+                            7. Juli
+                            8. Augusti
+                            9. September
+                            10. Oktober
+                            11. November
+                            12. December\n"""));
 
                     if (monthChoice >= 1 && monthChoice <= 12)
                         runningMonth = false;
                     else
                         IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     LOGGER.info("User tried invalid month.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
@@ -289,8 +304,7 @@ public class BudgetSystem {
                         runningDate = false;
                     else
                         IO.println("Den här månaden har " + maxDay + " dagar, försök igen.");
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     LOGGER.info("User tried invalid date.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
@@ -313,8 +327,21 @@ public class BudgetSystem {
         }
 
 
+    }
+
+    public void loadFromFile() {
+        Path path = Path.of(budget.csv);
+
+        //Todo: complete loadFromFile with reading from file to transaction-list
+        try {
+            if (!Files.exists(path)) {
+                Files.createFile(path);
+                LOGGER.info("File " + path + " created.");
+                return;
+            }
         }
 
+    }
 
     private void saveToFile() {
 
