@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 
 
 public class BudgetSystem {
@@ -86,6 +87,7 @@ public class BudgetSystem {
                     IO.println("Felaktig inmatning, försök igen");
                 }
             } catch (Exception e) {
+                LOGGER.info("User tried invalid input.");
                 IO.println("Felaktig inmatning, försök igen.");
             }
         }
@@ -129,6 +131,7 @@ public class BudgetSystem {
         Collection<Transaction> list = transactions.findAll();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (list.isEmpty()) {
+            LOGGER.info("Transaction list is empty.");
             IO.println("Det finns inga transaktioner registrerade.");
             return;
         }
@@ -142,6 +145,13 @@ public class BudgetSystem {
     }
 
     private void showSummary() {
+        Collection<Transaction> list = transactions.findAll();
+        if (list.isEmpty()) {
+            LOGGER.info("Transaction list is empty.");
+            IO.println("Det finns inga transaktioner registrerade.");
+            return;
+        }
+
         double balance = calculator.totalBalance(transactions.findAll());
         IO.println("Saldo: " + balance);
 
@@ -181,6 +191,7 @@ public class BudgetSystem {
                     IO.println("Felaktig inmatning, försök igen");
                 }
             } catch (Exception e) {
+                LOGGER.info("User tried invalid sort.");
                 IO.println("Felaktig inmatning, försök igen");
             }
         }
@@ -212,6 +223,7 @@ public class BudgetSystem {
                         running2 = false;
 
                 } catch (Exception e) {
+                    LOGGER.info("User tried invalid type choice.");
                     IO.println("Felaktig inmatning, försök igen");
                 }
 
@@ -233,6 +245,7 @@ public class BudgetSystem {
 
                 }
                 catch (Exception e) {
+                    LOGGER.info("User tried invalid year.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
             }
@@ -261,6 +274,7 @@ public class BudgetSystem {
                         IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
                 }
                 catch (Exception e) {
+                    LOGGER.info("User tried invalid month.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
             }
@@ -277,6 +291,7 @@ public class BudgetSystem {
                         IO.println("Den här månaden har " + maxDay + " dagar, försök igen.");
                 }
                 catch (Exception e) {
+                    LOGGER.info("User tried invalid date.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
             }
@@ -301,10 +316,10 @@ public class BudgetSystem {
         }
 
 
-
-
     private void saveToFile() {
 
     }
+
+    private static final Logger LOGGER = Logger.getLogger(BudgetSystem.class.getName());
 
 }
