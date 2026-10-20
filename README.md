@@ -2,7 +2,8 @@
 
 Även om det här projektet i sin grundstruktur till stor del liknade Bibliotekshanteraren var det många nya detaljer  
 som gjorde att det var mycket att få ihop. Den här gången upplevde jag dock att det var lättare att se brister  
-där metoder eller klasser behövde läggas till alternativt tas bort för att alla funktioner som behövdes.  
+där metoder eller klasser behövde läggas till för alla funktioner som behövdes alternativt tas bort för att  
+de var överflödiga.  
   
 Till stor del följde jag grundstrukturen som rekommenderades med TransactionType (enum), Transactions (record),  
 Repository (generisk) samt InvalidTransactionException (extended RuntimeException).  
