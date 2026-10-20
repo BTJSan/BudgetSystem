@@ -9,6 +9,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 public class BudgetSystem {
@@ -53,10 +54,7 @@ public class BudgetSystem {
                     budgetSystem.showSummary();
                 }
                 case "4" -> {
-                    //Kontrollera om resultatet blir 0 och skriv ut meddelande
-                    //Annars ska resultatet skrivas ut
                     budgetSystem.filterOptions();
-
                 }
                 case "5" -> {
                     budgetSystem.saveToFile();
@@ -85,8 +83,7 @@ public class BudgetSystem {
                         1. Inkomst
                         2. Utgift\n"""));
 
-                if (newType == 1 || newType == 2)
-                    running1 = false;
+                if (newType == 1 || newType == 2) running1 = false;
                 else {
                     IO.println("Felaktig inmatning, försök igen");
                 }
@@ -99,18 +96,15 @@ public class BudgetSystem {
         boolean running2 = true;
         while (running2) {
             newCategory = IO.readln("\nAnge kategori (exempel lön, mat etc.): ");
-            if (newCategory.trim().isEmpty())
-                IO.println("Du måste ange en kategori, försök igen.");
-            else
-                running2 = false;
+            if (newCategory.trim().isEmpty()) IO.println("Du måste ange en kategori, försök igen.");
+            else running2 = false;
         }
 
         boolean running3 = true;
         while (running3) {
             try {
                 newAmount = Double.parseDouble(IO.readln("Ange summan: "));
-                if (newAmount <= 0)
-                    throw new InvalidTransactionException("Beloppet måste vara större än 0.");
+                if (newAmount <= 0) throw new InvalidTransactionException("Beloppet måste vara större än 0.");
 
                 running3 = false;
             } catch (NumberFormatException e) {
@@ -121,10 +115,8 @@ public class BudgetSystem {
         }
 
         TransactionType typeEnum;
-        if (newType == 1)
-            typeEnum = TransactionType.INCOME;
-        else
-            typeEnum = TransactionType.EXPENSE;
+        if (newType == 1) typeEnum = TransactionType.INCOME;
+        else typeEnum = TransactionType.EXPENSE;
 
         Transaction transaction = new Transaction(LocalDateTime.now(), newCategory, newAmount, typeEnum);
         transactions.add(transaction);
@@ -141,10 +133,7 @@ public class BudgetSystem {
         }
 
         for (Transaction transaction : list) {
-            IO.println(transaction.date().format(dtf) + "\t|\t"
-                    + transaction.category() + "\t|\t"
-                    + transaction.amount() + "\t|\t"
-                    + transaction.type().displayName());
+            IO.println(transaction.date().format(dtf) + "\t|\t" + transaction.category() + "\t|\t" + transaction.amount() + "\t|\t" + transaction.type().displayName());
         }
     }
 
@@ -189,8 +178,7 @@ public class BudgetSystem {
                         1. Sortera på inkomster / utgifter
                         2. Sortera på datum\n"""));
 
-                if (sortChoice == 1 || sortChoice == 2)
-                    running1 = false;
+                if (sortChoice == 1 || sortChoice == 2) running1 = false;
                 else {
                     IO.println("Felaktig inmatning, försök igen");
                 }
@@ -218,9 +206,7 @@ public class BudgetSystem {
                         continue;
                     }
                     for (Transaction transaction : filteredList) {
-                        IO.println(transaction.date().format(dtf) + "\t|\t"
-                                + transaction.category() + "\t|\t"
-                                + transaction.amount());
+                        IO.println(transaction.date().format(dtf) + "\t|\t" + transaction.category() + "\t|\t" + transaction.amount());
                     }
                     running2 = false;
 
@@ -238,12 +224,9 @@ public class BudgetSystem {
 
                 try {
                     yearChoice = Integer.parseInt(IO.readln("Ange år med fyra siffror: "));
-                    if (yearChoice >= 1900 && yearChoice <= LocalDate.now().getYear())
-                        runningYear = false;
-                    else if (yearChoice < 1900)
-                        IO.println("Året får inte ligga före 1900.");
-                    else
-                        IO.println("Du kan inte söka på år efter nuvarande år.");
+                    if (yearChoice >= 1900 && yearChoice <= LocalDate.now().getYear()) runningYear = false;
+                    else if (yearChoice < 1900) IO.println("Året får inte ligga före 1900.");
+                    else IO.println("Du kan inte söka på år efter nuvarande år.");
 
                 } catch (Exception e) {
                     LOGGER.info("User tried invalid year.");
@@ -269,10 +252,8 @@ public class BudgetSystem {
                             11. November
                             12. December\n"""));
 
-                    if (monthChoice >= 1 && monthChoice <= 12)
-                        runningMonth = false;
-                    else
-                        IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
+                    if (monthChoice >= 1 && monthChoice <= 12) runningMonth = false;
+                    else IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
                 } catch (Exception e) {
                     LOGGER.info("User tried invalid month.");
                     IO.println("Felaktig inmatning, försök igen.");
@@ -285,10 +266,8 @@ public class BudgetSystem {
             while (runningDate) {
                 try {
                     dateChoice = Integer.parseInt(IO.readln("Ange datum: "));
-                    if (dateChoice >= 1 && dateChoice <= maxDay)
-                        runningDate = false;
-                    else
-                        IO.println("Den här månaden har " + maxDay + " dagar, försök igen.");
+                    if (dateChoice >= 1 && dateChoice <= maxDay) runningDate = false;
+                    else IO.println("Den här månaden har " + maxDay + " dagar, försök igen.");
                 } catch (Exception e) {
                     LOGGER.info("User tried invalid date.");
                     IO.println("Felaktig inmatning, försök igen.");
@@ -298,14 +277,11 @@ public class BudgetSystem {
             LocalDate filterDate = LocalDate.of(yearChoice, monthChoice, dateChoice);
             filteredList = calculator.filterByDate(list, filterDate);
 
-            if (filteredList.isEmpty())
-                IO.println("Det finns inga transaktioner för det angivna datumet.");
+            if (filteredList.isEmpty()) IO.println("Det finns inga transaktioner för det angivna datumet.");
             else {
                 IO.println("Transaktioner för " + filterDate + ":");
                 for (Transaction transaction : filteredList) {
-                    IO.println(transaction.date().format(dtf) + "\t|\t"
-                            + transaction.category()
-                            + "\t|\t" + transaction.amount());
+                    IO.println(transaction.date().format(dtf) + "\t|\t" + transaction.category() + "\t|\t" + transaction.amount());
                 }
             }
 
@@ -343,6 +319,28 @@ public class BudgetSystem {
     }
 
     private void saveToFile() {
+        String home = System.getProperty("user.home");
+        Path path = Path.of(home, "budget.csv");
+
+        Collection<Transaction> list = transactions.findAll();
+
+        String sb = list.stream().map(t ->
+                t.date()
+                        + ";"
+                        + t.category()
+                        + ";"
+                        + t.amount()
+                        + ";"
+                        + t.type()
+                        + "\n")
+                .collect(Collectors.joining());
+
+        try {
+            Files.writeString(path, sb.toString());
+            LOGGER.info("Saved to file.");
+        } catch (IOException e) {
+            LOGGER.warning("Could not save transactions to file.");
+        }
 
     }
 
