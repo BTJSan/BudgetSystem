@@ -18,23 +18,8 @@ public class BudgetSystem {
 
     static void main(String[] args) {
 
-        String homeFolder = System.getProperty("user.home");
-        Path homePath = Path.of(homeFolder);
-        Path path = homePath.resolve("java26", "budget.csv");
-
-        try {
-            List<String> lines = Files.readAllLines(path);
-            lines.forEach(IO::println);
-        } catch (IOException e) {
-            IO.println("Error while reading file");
-        }
-
-
-        String homeFolder = System.getProperty("user.home");
-        Path homePath = Path.of(homeFolder);
-        Path savePath = homePath.resolve("budget");
-
         BudgetSystem budgetSystem = new BudgetSystem();
+        budgetSystem.loadFromFile();
 
         boolean closeApplication = false;
         String inputChoice;
@@ -330,21 +315,45 @@ public class BudgetSystem {
     }
 
     public void loadFromFile() {
-        Path path = Path.of(budget.csv);
+        String home = System.getProperty("user.home");
+        Path path = Path.of(home, "budget.csv");
 
-        //Todo: complete loadFromFile with reading from file to transaction-list
         try {
             if (!Files.exists(path)) {
                 Files.createFile(path);
-                LOGGER.info("File " + path + " created.");
+                LOGGER.info("File " + path + " created automatically.");
                 return;
             }
-        }
 
+            List<String> lines = Files.readAllLines(path);
+
+            lines.stream().forEach(line -> {
+                try {
+                    Transaction t = parseTransaction(line);
+                    transactions.add(t);
+                } catch (Exception e) {
+                    LOGGER.warning("Could not parse transaction: " + line);
+                }
+            });
+            LOGGER.info("Loaded transactions from file.");
+
+        } catch (IOException e) {
+            LOGGER.warning("Could not load transactions from file.");
+        }
     }
 
     private void saveToFile() {
 
+    }
+
+    private Transaction parseTransaction(String line) {
+        String[] parts = line.split(";");
+        LocalDateTime date = LocalDateTime.parse(parts[0]);
+        String category = parts[1];
+        double amount = Double.parseDouble(parts[2]);
+        TransactionType type = TransactionType.valueOf(parts[3]);
+
+        return new Transaction(date, category, amount, type);
     }
 
     private static final Logger LOGGER = Logger.getLogger(BudgetSystem.class.getName());
