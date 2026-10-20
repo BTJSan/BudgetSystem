@@ -88,7 +88,7 @@ public class BudgetSystem {
                     IO.println("Felaktig inmatning, försök igen");
                 }
             } catch (Exception e) {
-                LOGGER.info("User tried invalid input.");
+                LOGGER.warning("User tried invalid input.");
                 IO.println("Felaktig inmatning, försök igen.");
             }
         }
@@ -183,7 +183,7 @@ public class BudgetSystem {
                     IO.println("Felaktig inmatning, försök igen");
                 }
             } catch (Exception e) {
-                LOGGER.info("User tried invalid sort.");
+                LOGGER.warning("User tried invalid sort.");
                 IO.println("Felaktig inmatning, försök igen");
             }
         }
@@ -211,7 +211,7 @@ public class BudgetSystem {
                     running2 = false;
 
                 } catch (Exception e) {
-                    LOGGER.info("User tried invalid type choice.");
+                    LOGGER.warning("User tried invalid type choice.");
                     IO.println("Felaktig inmatning, försök igen");
                 }
 
@@ -229,7 +229,7 @@ public class BudgetSystem {
                     else IO.println("Du kan inte söka på år efter nuvarande år.");
 
                 } catch (Exception e) {
-                    LOGGER.info("User tried invalid year.");
+                    LOGGER.warning("User tried invalid year.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
             }
@@ -255,7 +255,7 @@ public class BudgetSystem {
                     if (monthChoice >= 1 && monthChoice <= 12) runningMonth = false;
                     else IO.println("Felaktig inmatning, ange ett tal från 1 till 12.");
                 } catch (Exception e) {
-                    LOGGER.info("User tried invalid month.");
+                    LOGGER.warning("User tried invalid month.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
             }
@@ -269,7 +269,7 @@ public class BudgetSystem {
                     if (dateChoice >= 1 && dateChoice <= maxDay) runningDate = false;
                     else IO.println("Den här månaden har " + maxDay + " dagar, försök igen.");
                 } catch (Exception e) {
-                    LOGGER.info("User tried invalid date.");
+                    LOGGER.warning("User tried invalid date.");
                     IO.println("Felaktig inmatning, försök igen.");
                 }
             }
